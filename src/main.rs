@@ -1,5 +1,9 @@
+use crate::sim::nodes::Node;
+use crate::sim::nodes::and::AndGate;
+use crate::sim::nodes::io::Input;
+use crate::sim::nodes::not::NotGate;
+use crate::sim::nodes::or::OrGate;
 use bevy::{color::palettes::basic::WHITE, prelude::*};
-use sim::gates::Gate;
 use util::input::{InputPlugin, Mouse};
 
 pub mod sim;
@@ -12,11 +16,18 @@ fn main() {
     //     .add_systems(Update, draw_cursor)
     //     .run();
 
-    let switch_a = Box::new(sim::gates::Input { state: true });
-    let switch_b = Box::new(sim::gates::Input { state: false });
-    let lamp = sim::gates::OrGate::new(switch_a, switch_b).simulate();
+    let switch_a = Box::new(Input { state: false });
+    let switch_b = Box::new(Input { state: false });
+    let switch_c = Box::new(Input { state: true });
 
-    println!("{}", lamp)
+    let or = Box::new(OrGate::new(Some(switch_a), Some(switch_b)));
+
+    let lamp = AndGate::new(Some(or), Some(switch_c)).simulate();
+
+    let not = NotGate::new(None).simulate();
+
+    println!("AND(OR(A, B), C) -> {}", lamp);
+    println!("NOT -> {}", not);
 }
 
 fn draw_cursor(mut gizmos: Gizmos, mouse: Res<Mouse>) {
