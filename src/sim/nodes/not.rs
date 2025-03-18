@@ -4,7 +4,6 @@ use bevy::prelude::*;
 #[derive(Component)]
 pub struct NotGate {
     a_gate: NodeComponent,
-    state: bool,
 }
 
 impl NotGate {
@@ -14,14 +13,12 @@ impl NotGate {
                 Some(a) => a,
                 None => Box::new(VoidNode),
             },
-            state: true,
         }
     }
 }
 
 impl Node for NotGate {
-    fn simulate(&mut self) -> bool {
-        self.state = !self.a_gate.simulate();
-        self.state
+    fn simulate(&self) -> bool {
+        !self.a_gate.simulate()
     }
 }

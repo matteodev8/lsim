@@ -3,7 +3,7 @@ pub struct Input {
 }
 
 impl super::Node for Input {
-    fn simulate(&mut self) -> bool {
+    fn simulate(&self) -> bool {
         self.state
     }
 }

@@ -6,15 +6,24 @@ pub mod not;
 pub mod or;
 
 pub trait Node: Send + Sync {
-    fn simulate(&mut self) -> bool;
+    fn simulate(&self) -> bool;
 }
-type NodeComponent = Box<dyn Node>;
+pub type NodeComponent = Box<dyn Node>;
 
 #[derive(Component)]
 pub struct VoidNode;
 
 impl Node for VoidNode {
-    fn simulate(&mut self) -> bool {
+    fn simulate(&self) -> bool {
         false
+    }
+}
+
+impl From<Option<NodeComponent>> for NodeComponent {
+    fn from(value: Option<NodeComponent>) -> Self {
+        match value {
+            Some(v) => v,
+            None => Box::new(VoidNode),
+        }
     }
 }

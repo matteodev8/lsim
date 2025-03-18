@@ -1,8 +1,8 @@
-use crate::sim::nodes::Node;
 use crate::sim::nodes::and::AndGate;
 use crate::sim::nodes::io::Input;
 use crate::sim::nodes::not::NotGate;
 use crate::sim::nodes::or::OrGate;
+use crate::sim::nodes::{Node, NodeComponent};
 use bevy::{color::palettes::basic::WHITE, prelude::*};
 use util::input::{InputPlugin, Mouse};
 
@@ -16,13 +16,13 @@ fn main() {
     //     .add_systems(Update, draw_cursor)
     //     .run();
 
-    let switch_a = Box::new(Input { state: false });
-    let switch_b = Box::new(Input { state: false });
-    let switch_c = Box::new(Input { state: true });
+    let switch_a: NodeComponent = Box::new(Input { state: false });
+    let switch_b: NodeComponent = Box::new(Input { state: false });
+    let switch_c: NodeComponent = Box::new(Input { state: true });
 
-    let or = Box::new(OrGate::new(Some(switch_a), Some(switch_b)));
+    let or: NodeComponent = Box::new(OrGate::new(switch_a, switch_b));
 
-    let lamp = AndGate::new(Some(or), Some(switch_c)).simulate();
+    let lamp = AndGate::new(or, switch_c).simulate();
 
     let not = NotGate::new(None).simulate();
 
